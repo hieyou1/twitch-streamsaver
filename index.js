@@ -7,6 +7,16 @@ const fetch = require("node-fetch");
  * @default
  */
 const CACHE_NONGLOBAL = true;
+
+/**
+ * @constant {Object} DEFAULT_OPTIONS Define default options for people using this server
+ * @default
+ */
+const DEFAULT_OPTIONS = {
+    "greenScreen": false,
+    "channels": []
+};
+
 var token;
 var emotes = new Map();
 /**
@@ -49,6 +59,12 @@ const getToken = async () => {
 const Express = require("express");
 const app = Express();
 app.use(Express.static("./pub"));
+
+// get default options
+app.get("/defaultOpts", (req, res) => {
+    let opts = DEFAULT_OPTIONS;
+    res.status(200).json(DEFAULT_OPTIONS);
+});
 
 // path to get emotes as JSON data
 app.get("/emotes", async (req, res) => {

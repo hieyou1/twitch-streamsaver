@@ -1,6 +1,12 @@
 const id = document.getElementById.bind(document);
 
 window.onload = async () => {
+    /**
+     * @constant opts Options based on URL Search Params and default options from server
+     */
+    const opts = new Map(Object.entries(Object.assign({}, await (await fetch("/defaultOpts")).json(), Object.fromEntries(new URL(window.location).searchParams.entries()))));
+    console.log("using options", opts);
+
     var arrEmotes = [];
     var preloadEmotes = [];
     /**
@@ -20,8 +26,8 @@ window.onload = async () => {
     arrEmotes = (await (await fetch("/emotes?channel=global")).json());
 
     // if other channels passed, add them to array before picking
-    if (new URL(window.location).searchParams.has("channels"))
-        for (let i of new URL(window.location).searchParams.get("channels").split(","))
+    if (opts.has("channels"))
+        for (let i of opts.get("channels").split(","))
             if (i != null)
                 for (let j of (await (await fetch(`/emotes?channel=${i}`)).json())) arrEmotes.push(j);
 
@@ -37,7 +43,7 @@ window.onload = async () => {
                 fr.onloadend = () => {
                     resolve(fr.result)
                 };
-                fr.readAsDataURL(await (await fetch(i.images.url_4x /* 56x56 png */)).blob());
+                fr.readAsDataURL(await (await fetch(i.images.url_4x)).blob());
             });
             preloadEmotes.push(img);
         }
@@ -87,7 +93,6 @@ window.onload = async () => {
         // bounce the ball off each wall
 
         let onBounce = () => {
-            console.log(getRandomEmoteArray(1));
             emote = getRandomEmoteArray(1);
         };
 
@@ -116,7 +121,7 @@ window.onload = async () => {
 
         // draw background and ball
         // redraws the canvas each time, first it draws the background, then it redraws some of the black with a yellow square for the ball
-        context.fillStyle = "black";
+        context.fillStyle = ((opts.has("greenScreen") && opts.get("greenScreen") !== false) ? "rgb(0, 255, 0)" : "black");
         context.fillRect(0, 0, canvas.width, canvas.height);
         // context.fillStyle = "yellow";
         // context.fillRect(bx - bs / 2, by - bs / 2, bs, bs);
@@ -125,6 +130,9 @@ window.onload = async () => {
         context.drawImage(emote, bx - bs / 2, by - bs / 2);
 
     }
+
+    // Finish loading
+    document.body.removeChild(id("loading"));
 
     // Calls the update function every 1/30th of a second
     setInterval(update, 1000 / FPS);
