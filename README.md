@@ -16,3 +16,6 @@ Pass these using search parameters or the DEFAULT_OPTIONS object in index.js on 
 |-----------------------|------|-------|-------|
 | channels | Comma-seperated list | none [global emotes only]   | List of channel names to get emotes from |
 | greenScreen | Boolean  | false [black screen]   | Use a green screen to put other objects behind Twitch Streamsaver |
+
+## Contributors
+(https://github.com/AidanSpeakss)[AidanSpeakss]
