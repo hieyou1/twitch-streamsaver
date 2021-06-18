@@ -18,4 +18,4 @@ Pass these using search parameters or the DEFAULT_OPTIONS object in index.js on 
 | greenScreen | Boolean  | false [black screen]   | Use a green screen to put other objects behind Twitch Streamsaver |
 
 ## Contributors
-(https://github.com/AidanSpeakss)[AidanSpeakss]
+[AidanSpeakss](https://github.com/AidanSpeakss)
