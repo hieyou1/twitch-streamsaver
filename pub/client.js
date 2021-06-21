@@ -26,7 +26,7 @@ window.onload = async () => {
     arrEmotes = (await (await fetch("/emotes?channel=global")).json());
 
     // if other channels passed, add them to array before picking
-    if (opts.has("channels"))
+    if (opts.has("channels") && opts.get("channels").length > 0)
         for (let i of opts.get("channels").split(","))
             if (i != null)
                 for (let j of (await (await fetch(`/emotes?channel=${i}`)).json())) arrEmotes.push(j);
